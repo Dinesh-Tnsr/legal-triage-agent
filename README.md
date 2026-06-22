@@ -22,7 +22,3 @@ The system utilises a graph-based routing architecture powered by Gemini 3.5 Fla
 * Python 3.10+
 * Google Gemini API Key
 * `uv` package manager (recommended)
-
-## Setup Instructions
-
-Execute the following commands in your terminal to initialise the environment and install dependencies.
