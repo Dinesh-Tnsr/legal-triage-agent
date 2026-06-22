@@ -1,0 +1,11 @@
+[project]
+name = "legal_triage_agent"
+version = "0.1.0"
+description = "Legal Triage and Emergency Escalation Agent"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "google-adk>=2.0.0a0",
+    "pydantic>=2.0.0"
+]
+
