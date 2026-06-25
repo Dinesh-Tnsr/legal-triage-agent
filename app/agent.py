@@ -60,7 +60,7 @@ def intake_shield(node_input: str, ctx: Context) -> str:
     # 2. Fresh Triage Evaluation
     try:
         response = genai_client.models.generate_content(
-            model="gemini-3.5-flash",
+            model="gemini-2.5-flash",
             contents=node_input,
             config=dict(
                 response_mime_type="application/json",
@@ -78,9 +78,9 @@ def intake_shield(node_input: str, ctx: Context) -> str:
         confidence = res_data.get("confidence_score")
     except Exception as e:
         print(f"\n[!] API CRASH INTERCEPTED: {e}")
-        # If the API crashes, reject the query. Do NOT trigger a fake legal escalation.
+
         ctx.state['category'] = None
-        ctx.route = "out_of_scope"
+        ctx.route = "system_error"
         return node_input
 
     # 3. Secure Routing & Memory Management
@@ -108,7 +108,7 @@ def rejection_node(node_input: str) -> str:
 
 civil_advisor = LlmAgent(
     name="CivilAdvisor",
-    model="gemini-3.5-flash",
+    model="gemini-2.5-flash",
     instruction=(
         "You are a Civil Rights Advisor. Provide clear, general information regarding civil disputes. "
         "STRICT RULE: You must explicitly state that you are an AI providing educational information, "
@@ -123,9 +123,13 @@ with open(rules_path, "r", encoding="utf-8") as file:
 
 paralegal_intake = LlmAgent(
     name="ParalegalIntake",
-    model="gemini-3.5-flash", 
+    model="gemini-2.5-flash", 
     instruction=f"{criminal_rules}\nGather the location and charge, and do not offer legal advice."
 )
+
+def system_error_node(node_input: str) -> str:
+    print("\n[!] SYSTEM FALLBACK TRIGGERED")
+    return "Our legal triage system is currently experiencing high server demand. Please try submitting your query again in a few moments."
 
 def escalation_node(ctx: Context) -> str:
     print("\n========================================")
@@ -146,7 +150,8 @@ app = Workflow(
             "criminal": paralegal_intake,
             "civil": civil_advisor,
             "out_of_scope": rejection_node,
-            "escalation_node": escalation_node
+            "escalation_node": escalation_node,
+            "system_error": system_error_node  # NEW ROUTE LOCKED IN
         })
     ]
 )

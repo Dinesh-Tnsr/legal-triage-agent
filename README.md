@@ -9,7 +9,7 @@ Law firms and legal enterprises bleed capital manually sorting through top-of-fu
 The Legal Triage Graph automates the intake pipeline whilst strictly enforcing compliance. It categorises queries into deterministic tracks, aggressively protects the firm from malpractice by refusing to give formal advice, and seamlessly escalates high-risk, high-value leads directly to a human attorney. 
 
 ### Core Architecture & Flow
-The system utilises a graph-based routing architecture powered by Gemini 3.5 Flash and Google's Agent Development Kit (ADK 2.0). 
+The system utilises a graph-based routing architecture powered by Gemini 2.5 Flash and Google's Agent Development Kit (ADK 2.0). 
 
 1. **Intake Shield (Start Node):** Analyzes the user's initial query and forces a rigid JSON categorization (Civil, Criminal, Out of Scope).
 2. **Track-Specific Nodes:** 
